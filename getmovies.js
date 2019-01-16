@@ -1,4 +1,4 @@
-const Datastore = require('@google-cloud/datastore')
+const { Datastore } = require('@google-cloud/datastore')
 const projectId = 'linebot-get-movies'
 const datastore = new Datastore({
     projectId : projectId,
