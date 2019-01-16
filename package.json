@@ -1,7 +1,7 @@
 {
   "name": "linebot_getmovies",
   "version": "1.0.0",
-  "description": "Line BOT to get a list of movies right now",
+  "description": "Google Functions\r Google Datastore",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
