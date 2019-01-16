@@ -1,0 +1,23 @@
+{
+  "name": "linebot_getmovies",
+  "version": "1.0.0",
+  "description": "Line BOT to get a list of movies right now",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/High-Temple-Force/linebot_getmovies.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/High-Temple-Force/linebot_getmovies/issues"
+  },
+  "homepage": "https://github.com/High-Temple-Force/linebot_getmovies#readme",
+  "dependencies": {
+    "@google-cloud/datastore": "^3.0.1"
+  }
+}
