@@ -15,9 +15,12 @@ const task = {
     },
 }
 
-datastore.save(task).then(() => {
-    console.log(`Saved ${task.key.name} : ${task.data.description}`)
-})
-.catch(err => {
-    console.error('Error,' , err)
-})
+exports.testDATA = (req, res) => {    
+    datastore.save(task).then(() => {
+        console.log(`Saved ${task.key.name} : ${task.data.description}`)
+    })
+    .catch(err => {
+        console.error('Error,' , err)
+    })
+    .then(res.send('Succedde'))
+}

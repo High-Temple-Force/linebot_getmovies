@@ -19,3 +19,9 @@ $ npm install --save @google-cloud/datastore
 getmovies.js
 Cloud API に対し、認証を行う
 [ここ](https://cloud.google.com/docs/authentication/getting-started?hl=ja)参照
+
+### テスト
+Mochaを使用
+```
+$ npm i -g mocha
+```
