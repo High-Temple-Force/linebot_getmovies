@@ -12,6 +12,8 @@
 ```
 $ npm init -y
 $ npm install --save @google-cloud/datastore
+$ npm install --save cheerio 
+$ npm install --save request
 
 ```
 
