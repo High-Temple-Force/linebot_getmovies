@@ -35,14 +35,12 @@ request(url, (e, response, body) => {
     }
     try {
         const $ = cheerio.load(body)
-        const latestDate = $('h3', '.m_unit' ).text()
-        // console.log(`${latestDate}`)
-
         $('h3', '.m_unit' ).each((i, elem) => {
             titles_arr[i] = $(elem).text()
         })
-        console.log(titles_arr)
-
+        for (i in titles_arr) {
+            console.log(titles_arr[i])
+        }
      } catch (e) {
          console.error(e)
      }
