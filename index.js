@@ -37,12 +37,14 @@ exports.testDATA = (req, res) => {
                     }
                 }
                 upsertData(task)
-                res.send('Success!')
+               
             } 
+            res.send('Success!')
         } catch (e) {
             console.error(e)
             res.send('Error! Function ended.')
-     }
+     } 
+
     })
 }
 
