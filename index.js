@@ -6,7 +6,6 @@ const datastore = new Datastore({
     projectId : projectId,
 })
 const kind = 'Movies'
-const taskKey = datastore.key([kind])
 const url = 'https://eiga.com/now/all/rank/' // 映画.comランキングページ
 const titles_arr = []
 
@@ -38,9 +37,11 @@ exports.testDATA = (req, res) => {
                     }
                 }
                 upsertData(task)
+                res.send('Success!')
             } 
         } catch (e) {
             console.error(e)
+            res.send('Error! Function ended.')
      }
     })
 }
