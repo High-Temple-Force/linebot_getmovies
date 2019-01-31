@@ -1,3 +1,9 @@
+const { Datastore } = require('@google-cloud/datastore')
+const datastore = new Datastore({
+  projectId : projectId,
+})
+
+
 exports.listTasks = (req, res) => {
     const query = datastore.createQuery('Movies').order('created')
     datastore
