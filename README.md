@@ -14,6 +14,7 @@ $ npm init -y
 $ npm install --save @google-cloud/datastore
 $ npm install --save cheerio 
 $ npm install --save request
+$ npm install --save @line/bot-sdk
 
 ```
 
