@@ -29,12 +29,14 @@ exports.testDATA = (req, res) => {
         })
             for (i in titles_arr) {
                 console.log(titles_arr[i])
-                const taskKey = datastore.key([kind, i])
+                const taskKey = datastore.key([kind, Number(i)])
                 const task = {
                     key: taskKey,
-                    data: {
-                        name: titles_arr[i]
-                    }
+                  	data: {
+                      id: Number(i),
+                      name: titles_arr[i],
+                      created: Date.now()
+            			} 
                 }
                 upsertData(task)
                
