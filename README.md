@@ -23,6 +23,11 @@ getmovies.js
 Cloud API に対し、認証を行う
 [ここ](https://cloud.google.com/docs/authentication/getting-started?hl=ja)参照
 
+
+### Cloud Functions
+```
+$ gcloud functions deploy function-2 --set-env-vars foo=bar
+```
 ### テスト
 Mochaを使用
 ```
