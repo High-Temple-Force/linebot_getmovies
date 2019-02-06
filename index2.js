@@ -24,8 +24,8 @@ exports.testDATA = (req, res) => {
         }
         try {
             const $ = cheerio.load(body)
-            $('h3', '.m_unit' ).each((i, elem) => {
-                titles_arr[i] = $(elem).text()
+            $('h3', '.m_unit' ).each((a, elem) => {
+                titles_arr[a] = $(elem).text()
         })
             for (i in titles_arr) {
                 console.log(titles_arr[i])
