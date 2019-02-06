@@ -12,8 +12,8 @@ const titles_arr = []
 const upsertData = (task) => {
     datastore.upsert(task)
     .then(console.log('Succsess!'))
-    .catch(err => {
-        console.error(`Failed coz ${err}`)
+    .catch((e) => {
+        console.error(`Failed coz ${e}`)
     })
 }
 
@@ -29,13 +29,11 @@ exports.testDATA = (req, res) => {
         })
             for (i in titles_arr) {
                 console.log(titles_arr[i])
-                const taskKey = datastore.key([kind, Number(i)])
+                const taskKey = datastore.key([kind, Number(i)+1])
                 const task = {
                     key: taskKey,
                   	data: {
-                      id: Number(i),
                       name: titles_arr[i],
-                      created: Date.now()
             			} 
                 }
                 upsertData(task)
