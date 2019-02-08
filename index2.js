@@ -13,12 +13,16 @@ const kind = 'Movies'
 const url = 'https://eiga.com/now/all/rank/' // 映画.comランキングページ
 const titles_arr = []
 
-
+// configure LINE BOT
 const config = {
     channelAccessToken: process.env.CHANNEL_ACCESS_TOKEN,
     channelSecret: process.env.CHANNEL_SECRET,
   }
+// create LINE SDK client
+const client = new line.Client(config)
+const app = express()
 
+// difine funciton upserting datas
 const upsertData = (task) => {
     datastore.upsert(task)
     .then(console.log('Succsess!'))
@@ -58,18 +62,6 @@ exports.testDATA = (req, res) => {
     })
 }
 
-
-
-
-
-
-// create LINE SDK client
-const client = new line.Client(config);
-
-// create Express app
-// about Express itself: https://expressjs.com/
-const app = express();
-
 // register a webhook handler with middleware
 // about the middleware, please refer to doc
 app.post('/callback', line.middleware(config), (req, res) => {
@@ -77,21 +69,21 @@ app.post('/callback', line.middleware(config), (req, res) => {
     .all(req.body.events.map(handleEvent))
     .then((result) => res.json(result))
     .catch((err) => {
-      console.error(err);
-      res.status(500).end();
-    });
-});
+      console.error(err)
+      res.status(500).end()
+    })
+})
 
 // event handler
-function handleEvent(event) {
+const handleEvent = (event) => {
   if (event.type !== 'message' || event.message.type !== 'text') {
     // ignore non-text-message event
-    return Promise.resolve(null);
+    return Promise.resolve(null)
   }
 
   // create a echoing text message
-  const echo = { type: 'text', text: event.message.text };
+  const echo = { type: 'text', text: event.message.text }
 
   // use reply API
-  return client.replyMessage(event.replyToken, echo);
+  return client.replyMessage(event.replyToken, echo)
 }
