@@ -6,7 +6,7 @@ const datastore = new Datastore({
 
 const titles_arr = []
 exports.listTasks = (req, res) => {
-    const query = datastore.createQuery('Movies').order('id')
+    const query = datastore.createQuery('Movies')
     datastore
       .runQuery(query)
       .then(results => {
