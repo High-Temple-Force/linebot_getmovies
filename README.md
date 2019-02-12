@@ -1,7 +1,7 @@
 # LINE BOT _ getmovies
 
 ### 環境
-- Google Functions
+- Cloud Functions
 
 - Google Datastore
 

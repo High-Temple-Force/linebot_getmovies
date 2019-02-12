@@ -20,6 +20,7 @@ const titles_arr = []
 
 
 exports.listTasks = (req, res) => {
+    app.use(line.middleware(config))
     const query = datastore.createQuery('Movies')
     datastore
       .runQuery(query)
@@ -29,8 +30,10 @@ exports.listTasks = (req, res) => {
           console.log(task.name /*, task*/)
           titles_arr.push(task.name)
         })
-      	const titlenames = titles_arr.join('\n')
-        res.send(titlenames)
+        const titlenames = titles_arr.join('\n')
+        const echo = { type: 'text', text: titlenames }
+        const return_titles = client.replyMessage(event.replyToken, echo)
+        res.send(return_titles)
       })
       .catch(err => {
         console.error('ERROR:', err)
