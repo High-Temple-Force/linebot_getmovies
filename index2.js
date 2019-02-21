@@ -37,6 +37,7 @@ exports.testDATA = (req, res) => {
             console.error(e)
         }
         try {
+            app.use(line.middleware(config))
             const $ = cheerio.load(body)
             $('h3', '.m_unit' ).each((a, elem) => {
                 titles_arr[a] = $(elem).text()
