@@ -15,24 +15,6 @@ const config = {
 // create LINE SDK client
 const client = new line.Client(config)
 
-var Query_Datastore = new Promise ((resolve, reject) => {
-  console.log('Start query func')
-  datastore
-  .runQuery(datastore.createQuery('Movies'))
-  .then((results) => {
-    var titles_arr = []
-    var tasks = results[0]
-    tasks.forEach((task) => {
-      titles_arr.push(task.name)
-    })
-    console.log('Succeeded to get names')
-    resolve(titles_arr.join('\n'))
-  })
-  .catch(err => {
-    reject(console.error('ERROR:', err))
-  })
-})
-
 var handlerEvent = (event) => {
   console.log(event.replyToken)
   return event.replyToken
@@ -44,6 +26,26 @@ const token = req.body.events[0].replyToken
 res.json(handleEvent(token))
 */
 exports.listTasks = (req, res) => {
+  // query for datastore func
+  var Query_Datastore = new Promise ((resolve, reject) => {
+    console.log('Start query func')
+    datastore
+    .runQuery(datastore.createQuery('Movies'))
+    .then((results) => {
+      var titles_arr = []
+      var tasks = results[0]
+      tasks.forEach((task) => {
+        titles_arr.push(task.name)
+      })
+      console.log('Succeeded to get names')
+      resolve(titles_arr.join('\n'))
+    })
+    .catch(err => {
+      reject(console.error('ERROR:', err))
+    })
+  })
+
+  // promise event and titles
   Promise
     .all([req.body.events.map(handlerEvent), Query_Datastore])
     .then((result) => {
