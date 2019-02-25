@@ -9,56 +9,49 @@ const datastore = new Datastore({
 
 // configure LINE BOT
 const config = {
-  channelAccessToken: ,
-  channelSecret: process.env.CHANNEL_SECRET,
+  channelAccessToken: 'TxZUc14K+sxqjS297KtOCm5lV4blOzyk/3t7ZE52HWwbZLbZvoYv1jbYmcZWj+t2poBQwq4YOGnlrwRXnT2H7QTaiEcSfNTKv8rHgOnzeJoq7/gJ4h7Q2R13psborwo1IppunKImPJ1nPYrBI4mKAgdB04t89/1O/w1cDnyilFU=',
+  //channelSecret: process.env.CHANNEL_SECRET,
+  channelSecret:'99f2bbb42adc9ff86dff6957d297d179',
 }
 // create LINE SDK client
 const client = new line.Client(config)
 const app = express()
 
 const titles_arr = []
+const Query_Datastore = () => {
+  const query = datastore.createQuery('Movies')
+  datastore
+  .runQuery(query)
+  .then((results) => {
+    const tasks = results[0]
+    tasks.forEach((task) => {
+      console.log(task.name)
+      titles_arr.push(task.name)
+    })
+    console.log('Succeeded to get names')
+    return titles_arr.join('\n')
+  })
+  .catch(err => {
+    console.error('ERROR:', err)
+  })
+}
 
 
 exports.listTasks = (req, res) => {
-    app.use(line.middleware(config))
-    const query = datastore.createQuery('Movies')
-    datastore
-      .runQuery(query)
-      .then(results => {
-        const tasks = results[0]
-        tasks.forEach(task => {
-          console.log(task.name)
-          titles_arr.push(task.name)
-        })
-        const titlenames = titles_arr.join('\n')
-        const echo = { type: 'text', text: titlenames }
-        const return_titles = client.replyMessage(event.replyToken, echo)
-        res.send(return_titles)
-      })
-      .catch(err => {
-        console.error('ERROR:', err)
-        res.send('Error!')
-      })
-  }
+    app.use('/', line.middleware(config))
+    const token = req.body.events[0].replyToken
+    res.json(handleEvent(token))
+    
+}
 
   
+// event handler
+const handleEvent = (token) => {
+  // create a echoing text message
+  const echo = { type: 'text', text: Query_Datastore()}
+  // use reply API
+  return client.replyMessage(token, echo)
+}
 
 // register a webhook handler with middleware
 // about the middleware, please refer to doc
-app.post('/callback', line.middleware(config), (req, res) => {
-  Promise
-    .all(req.body.events.map(handleEvent(), titlenames))
-    .then((result) => res.json(result))
-    .catch((err) => {
-      console.error(err)
-      res.status(500).end()
-    })
-})
-
-// event handler
-const handleEvent = (event) => {
-  // create a echoing text message
-  const echo = { type: 'text', text: titlenames }
-  // use reply API
-  return client.replyMessage(event.replyToken, echo)
-}
