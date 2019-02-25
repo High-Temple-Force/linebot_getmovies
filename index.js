@@ -10,18 +10,18 @@ const datastore = new Datastore({
 const config = {
   channelAccessToken: 'TxZUc14K+sxqjS297KtOCm5lV4blOzyk/3t7ZE52HWwbZLbZvoYv1jbYmcZWj+t2poBQwq4YOGnlrwRXnT2H7QTaiEcSfNTKv8rHgOnzeJoq7/gJ4h7Q2R13psborwo1IppunKImPJ1nPYrBI4mKAgdB04t89/1O/w1cDnyilFU=',
   //channelSecret: process.env.CHANNEL_SECRET,
-  channelSecret:'99f2bbb42adc9ff86dff6957d297d179',
+  channelSecret: process.env.CHANNEL_SECRET,
 }
 // create LINE SDK client
 const client = new line.Client(config)
 
-const Query_Datastore = new Promise ((resolve, reject) => {
+var Query_Datastore = new Promise ((resolve, reject) => {
   console.log('Start query func')
   datastore
   .runQuery(datastore.createQuery('Movies'))
   .then((results) => {
-    const titles_arr = []
-    const tasks = results[0]
+    var titles_arr = []
+    var tasks = results[0]
     tasks.forEach((task) => {
       titles_arr.push(task.name)
     })
@@ -33,7 +33,7 @@ const Query_Datastore = new Promise ((resolve, reject) => {
   })
 })
 
-const handlerEvent = (event) => {
+var handlerEvent = (event) => {
   console.log(event.replyToken)
   return event.replyToken
 }
@@ -48,7 +48,7 @@ exports.listTasks = (req, res) => {
     .all([req.body.events.map(handlerEvent), Query_Datastore])
     .then((result) => {
       console.log(result)
-      const echo = { type: 'text', text: `${result[1]}` }
+      var echo = { type: 'text', text: `${result[1]}` }
       console.log(echo)
       return client.replyMessage(`${result[0]}`, echo)})
     .then((result) => res.json(result))
