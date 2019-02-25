@@ -1,7 +1,6 @@
 const { Datastore } = require('@google-cloud/datastore')
 const projectId = 'linebot-get-movies'
 const line = require('@line/bot-sdk')
-const express = require('express')
 const datastore = new Datastore({
   projectId : projectId,
 })
@@ -15,43 +14,43 @@ const config = {
 }
 // create LINE SDK client
 const client = new line.Client(config)
-const app = express()
 
-const titles_arr = []
-const Query_Datastore = () => {
-  const query = datastore.createQuery('Movies')
+const Query_Datastore = new Promise ((resolve, reject) => {
+  console.log('Start query func')
   datastore
-  .runQuery(query)
+  .runQuery(datastore.createQuery('Movies'))
   .then((results) => {
+    const titles_arr = []
     const tasks = results[0]
     tasks.forEach((task) => {
-      console.log(task.name)
       titles_arr.push(task.name)
     })
     console.log('Succeeded to get names')
-    return titles_arr.join('\n')
+    resolve(titles_arr.join('\n'))
   })
   .catch(err => {
-    console.error('ERROR:', err)
+    reject(console.error('ERROR:', err))
   })
+})
+
+const handlerEvent = (event) => {
+  console.log(event.replyToken)
+  return event.replyToken
 }
 
-
+/*
+app.use('/', line.middleware(config))
+const token = req.body.events[0].replyToken
+res.json(handleEvent(token))
+*/
 exports.listTasks = (req, res) => {
-    app.use('/', line.middleware(config))
-    const token = req.body.events[0].replyToken
-    res.json(handleEvent(token))
-    
+  Promise
+    .all([req.body.events.map(handlerEvent), Query_Datastore])
+    .then((result) => {
+      console.log(result)
+      const echo = { type: 'text', text: `${result[1]}` }
+      console.log(echo)
+      return client.replyMessage(`${result[0]}`, echo)})
+    .then((result) => res.json(result))
+    .catch((err) => res.status(400).send(err.toString()))
 }
-
-  
-// event handler
-const handleEvent = (token) => {
-  // create a echoing text message
-  const echo = { type: 'text', text: Query_Datastore()}
-  // use reply API
-  return client.replyMessage(token, echo)
-}
-
-// register a webhook handler with middleware
-// about the middleware, please refer to doc
