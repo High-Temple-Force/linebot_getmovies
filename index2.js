@@ -29,23 +29,23 @@ exports.testDATA = (req, res) => {
             const $ = cheerio.load(body)
             $('h3', '.m_unit' ).each((a, elem) => {
                 titles_arr[a] = $(elem).text()
-        })
+            })
             for (i in titles_arr) {
                 console.log(titles_arr[i])
                 const taskKey = datastore.key([kind, Number(i)+1])
+                // define record structure
                 const task = {
                     key: taskKey,
                   	data: {
                       name: titles_arr[i],
-            			} 
+            		} 
                 }
                 upsertData(task)
             }
+            console.log('Success!')
             res.send('Success!')
         } catch (e) {
             console.error(e)
             res.send('Error! Function ended.')
-     } 
-
-    })
+     }})
 }
